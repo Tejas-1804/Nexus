@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | Premium Global News Portal</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --secondary: #a855f7;
+            --bg-dark: #020617;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-white: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-white); line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .highlight { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Blobs */
+        .blob { position: fixed; width: 600px; height: 600px; filter: blur(120px); z-index: -1; opacity: 0.15; border-radius: 50%; pointer-events: none; animation: blobFloat 20s infinite alternate; }
+        .blob-1 { background: var(--primary); top: -200px; right: -100px; }
+        .blob-2 { background: var(--secondary); bottom: -100px; left: -100px; animation-delay: -5s; }
+        @keyframes blobFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 100px) scale(1.1); } }
+
+        /* Navigation */
+        header { position: sticky; top: 0; z-index: 1000; padding: 1.2rem 0; backdrop-filter: blur(20px); background: rgba(2, 6, 23, 0.8); border-bottom: 1px solid var(--glass-border); }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; cursor: pointer; display: flex; flex-direction: column; }
+        .tagline { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); font-weight: 600; }
+        
+        .main-nav { display: flex; gap: 2rem; }
+        .nav-item { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 1rem; transition: var(--transition-smooth); }
+        .nav-item:hover, .nav-item.active { color: var(--text-white); }
+
+        .search-bar { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); padding: 0.5rem 1.2rem; border-radius: 99px; display: flex; align-items: center; gap: 0.8rem; }
+        .search-bar input { background: transparent; border: none; color: white; outline: none; font-size: 0.9rem; width: 180px; }
+
+        /* Home Page */
+        .categories-bar { display: flex; gap: 1rem; margin: 2rem 0; overflow-x: auto; padding-bottom: 0.5rem; }
+        .cat-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 0.6rem 1.5rem; border-radius: 99px; cursor: pointer; white-space: nowrap; transition: var(--transition-smooth); }
+        .cat-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
+
+        .hero-section { margin-bottom: 4rem; }
+        .hero-card { position: relative; height: 500px; border-radius: 32px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); transition: var(--transition-smooth); }
+        .hero-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+        .hero-card:hover img { transform: scale(1.05); }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(2, 6, 23, 1) 0%, rgba(2, 6, 23, 0.4) 40%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem; }
+        .badge { background: var(--primary); color: white; padding: 0.4rem 1rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; width: fit-content; margin-bottom: 1rem; }
+        .hero-title { font-size: 3rem; font-weight: 700; line-height: 1.1; max-width: 800px; }
+
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+        .news-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; border: 1px solid var(--glass-border); cursor: pointer; transition: var(--transition-smooth); display: flex; flex-direction: column; }
+        .news-card:hover { transform: translateY(-8px); border-color: rgba(255, 255, 255, 0.2); background: rgba(30, 41, 59, 0.8); }
+        .card-img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 1.5rem; flex-grow: 1; }
+        .card-cat { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+        .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.8rem; }
+        .card-excerpt { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Other Pages */
+        .page-content { padding: 6rem 0; text-align: center; display: none; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Modal */
+        .modal { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(15px); z-index: 2000; display: none; justify-content: center; overflow-y: auto; padding: 2rem; }
+        .modal-inner { max-width: 800px; width: 100%; background: var(--bg-dark); border-radius: 32px; border: 1px solid var(--glass-border); margin: auto; position: relative; }
+        .modal-close { position: sticky; top: 1rem; left: 90%; background: var(--glass-border); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        .modal-img { width: 100%; height: 400px; object-fit: cover; border-radius: 32px 32px 0 0; }
+        .modal-body { padding: 3rem; }
+        .modal-body h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+
+        footer { padding: 4rem 0; border-top: 1px solid var(--glass-border); margin-top: 5rem; text-align: center; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+        <nav class="container">
+            <div class="logo" onclick="app.setPage('home')">
+                <span>NEXUS</span>
+                <span class="tagline">Insight Refined</span>
+            </div>
+            <div class="main-nav">
+                <button class="nav-item active" onclick="app.setPage('home')" id="btn-home">Home</button>
+                <button class="nav-item" onclick="app.setPage('about')" id="btn-about">About</button>
+                <button class="nav-item" onclick="app.setPage('contact')" id="btn-contact">Contact</button>
+            </div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Search 20+ blogs..." oninput="app.handleSearch(this.value)">
+            </div>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <main id="view-home" class="container">
+        <div class="categories-bar" id="cat-bar">
+            <!-- Dynamic Categories -->
+        </div>
+        <div id="hero-spot"></div>
+        <h2 style="margin-bottom: 2rem;">Trending Stories</h2>
+        <div class="news-grid" id="news-grid"></div>
+    </main>
+
+    <!-- ABOUT PAGE -->
+    <main id="view-about" class="container page-content">
+        <h1 style="font-size: 4rem;">About <span class="highlight">Nexus</span></h1>
+        <p style="font-size: 1.5rem; color: var(--text-muted); max-width: 800px; margin: 2rem auto;">The premier destination for high-fidelity news, technology deep-dives, and global insights. Our mission is to refine your perspective.</p>
+        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200" style="width: 100%; border-radius: 32px; margin-top: 4rem;" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800'">
+    </main>
+
+    <!-- CONTACT PAGE -->
+    <main id="view-contact" class="container page-content">
+        <h1 style="font-size: 4rem;">Get in <span class="highlight">Touch</span></h1>
+        <div style="max-width: 600px; margin: 4rem auto; text-align: left; background: var(--bg-card); padding: 3rem; border-radius: 32px; border: 1px solid var(--glass-border);">
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Email Address</label>
+                <input type="text" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 1rem; border-radius: 12px; color: white;" placeholder="you@example.com">
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Message</label>
+                <textarea rows="5" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 1rem; border-radius: 12px; color: white;" placeholder="How can we help?"></textarea>
+            </div>
+            <button style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer;" onclick="alert('Message Sent!')">Send Message</button>
+        </div>
+    </main>
+
+    <footer>
+            <div class="footer-brand">
+                <div class="logo">NEXUS</div>
+                <p>&copy; 2024 Nexus Premium News Network. Built with Redux Toolkit.</p>
+                <a href="sitemap.xml" style="color: var(--primary); font-size: 0.8rem; text-decoration: none; margin-top: 0.5rem; display: inline-block;">View Sitemap</a>
+            </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+        <div class="modal-inner">
+            <button class="modal-close" onclick="app.closeModal()">✕</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- REDUX TOOLKIT & LOGIC (All-in-one for functionality) -->
+    <script src="https://unpkg.com/@reduxjs/toolkit@1.9.5/dist/redux-toolkit.umd.js"></script>
+    <script>
+        const { configureStore, createSlice } = RTK;
+
+        // --- 20 BLOGS DATABASE ---
+        const blogs = [
+            { id: 1, cat: "Tech", title: "The Quantum Leap: AI in 2025", excerpt: "How generative models are evolving into reasoning engines.", content: "AI is no longer just predicting text; it is solving complex physics and medical mysteries. The shift from LLMs to Large Reasoning Models (LRMs) is the biggest breakthrough of the decade...", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" },
+            { id: 2, cat: "Science", title: "Mars Colonization: Year One", excerpt: "The first human footsteps on the red planet.", content: "Starship has finally touched down on Jezero Crater. The first crew of 12 pioneers is currently setting up the 'Alpha Base' habitat, marking the start of a multi-planetary era...", img: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=800" },
+            { id: 3, cat: "Business", title: "The Post-Office Economy", excerpt: "How remote-first companies are outperforming legacy giants.", content: "Efficiency is up 40% in companies that abandoned physical offices. Talent is now global, and 'work-from-anywhere' is the new standard for the elite workforce...", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800" },
+            { id: 4, cat: "Culture", title: "Digital Minimalism", excerpt: "Finding peace in the age of constant notification.", content: "The 'Attention Economy' is facing a backlash. Users are returning to 'dumb phones' and physical books to reclaim their focus and mental well-being...", img: "https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?auto=format&fit=crop&q=80&w=800" },
+            { id: 5, cat: "Health", title: "Bio-Hacking for Longevity", excerpt: "Can we really live to be 150?", content: "Cellular reprogramming is showing promising results in clinical trials. By reversing epigenetic aging, we might soon extend the human healthspan by decades...", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800" },
+            { id: 6, cat: "Tech", title: "Neuromorphic Chips", excerpt: "Processing data like the human brain.", content: "New architecture is 1000x more efficient than traditional silicon. These chips don't just calculate; they learn through physical synaptic changes...", img: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=800" },
+            { id: 7, cat: "Science", title: "Fusion Power Milestone", excerpt: "Clean energy is finally on the horizon.", content: "A net energy gain of 500% was achieved in the latest Tokamak trial. Commercial fusion plants are now estimated to be only 10 years away...", img: "https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&q=80&w=800" },
+            { id: 8, cat: "Business", title: "Crypto 2.0: Utility Over Hype", excerpt: "How blockchain is fixing global supply chains.", content: "Forget memecoins. Enterprise-grade blockchains are now tracking 80% of global food logistics, reducing waste and fraud by billions...", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800" },
+            { id: 9, cat: "Culture", title: "The Return of Vinyl", excerpt: "Why analog media is booming in a streaming world.", content: "Record sales hit a 40-year high. Young listeners are seeking tactile experiences and high-fidelity sound that Spotify simply cannot provide...", img: "https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?auto=format&fit=crop&q=80&w=800" },
+            { id: 10, cat: "Health", title: "Mental Health in VR", excerpt: "Using immersive worlds to treat anxiety and PTSD.", content: "Virtual reality exposure therapy is proving more effective than traditional methods. Patients can face their fears in a safe, controlled digital environment...", img: "https://images.unsplash.com/photo-1478416272538-5f7e51dc5400?auto=format&fit=crop&q=80&w=800" },
+            { id: 11, cat: "Tech", title: "Solar Windows", excerpt: "Turning skyscrapers into power plants.", content: "Transparent solar cells can now capture energy from infrared light while remaining clear. Every window in New York could soon be generating electricity...", img: "https://images.unsplash.com/photo-1509391366360-feaffa603a4b?auto=format&fit=crop&q=80&w=800" },
+            { id: 12, cat: "Science", title: "Deep Sea Frontiers", excerpt: "Discovering alien life at the bottom of our oceans.", content: "Autonomous drones have found a new ecosystem around hydrothermal vents that doesn't rely on sunlight. It's the most significant biological find in 50 years...", img: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&q=80&w=800" },
+            { id: 13, cat: "Business", title: "Space Mining", excerpt: "The first trillionaire will be an asteroid miner.", content: "A single asteroid can contain more platinum than all of Earth's reserves. The race to the belt is officially on between private aerospace firms...", img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=800" },
+            { id: 14, cat: "Culture", title: "Slow Journalism", excerpt: "Why we need to stop the 24-hour news cycle.", content: "Quality over speed. Readers are increasingly subscribing to weekly deep-dives rather than minute-by-minute updates that lack context and accuracy...", img: "https://images.unsplash.com/photo-1504711432813-0b04a9f9393a?auto=format&fit=crop&q=80&w=800" },
+            { id: 15, cat: "Health", title: "The Sleep Revolution", excerpt: "How AI pillows and smart beds are fixing our rest.", content: "Precision sleep is here. Using real-time EEG and temperature adjustments, new beds can guarantee 8 hours of deep REM sleep every single night...", img: "https://images.unsplash.com/photo-1511295742364-9119557d4577?auto=format&fit=crop&q=80&w=800" },
+            { id: 16, cat: "Tech", title: "Cyber-Security AI", excerpt: "The war between hackers and defense bots.", content: "Ransomware is now automated. To fight back, companies are deploying 'Sentinel AI' that can detect and block attacks in milliseconds without human input...", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" },
+            { id: 17, cat: "Science", title: "The James Webb Legacy", excerpt: "Seeing the first stars ever born.", content: "We have now imaged galaxies from just 200 million years after the Big Bang. Our understanding of the early universe has been completely rewritten...", img: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800" },
+            { id: 18, cat: "Business", title: "The Rise of Solo-Preneurs", excerpt: "How one person can build a billion-dollar company.", content: "With AI tools handling code, marketing, and HR, we are seeing the first 'Unicorns' with only one employee. The future of business is lean and highly leveraged...", img: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=800" },
+            { id: 19, cat: "Culture", title: "Virtual Concerts", excerpt: "The end of the stadium tour?", content: "Millions attended the latest virtual tour from their living rooms. 3D spatial audio and haptic suits make it feel more real than being in the nosebleed seats...", img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800" },
+            { id: 20, cat: "Health", title: "Personalized Nutrition", excerpt: "Your DNA decides your dinner.", content: "One-size-fits-all diets are dead. New apps use your gut microbiome data to tell you exactly what to eat for maximum energy and weight loss...", img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800" }
+        ];
+
+        // --- REDUX LOGIC ---
+        const slice = createSlice({
+            name: 'app',
+            initialState: {
+                blogs,
+                cat: 'All',
+                search: '',
+                page: 'home',
+                activeBlog: null
+            },
+            reducers: {
+                setCat: (state, action) => { state.cat = action.payload; state.search = ''; },
+                setSearch: (state, action) => { state.search = action.payload; state.cat = 'All'; },
+                setPage: (state, action) => { state.page = action.payload; state.activeBlog = null; },
+                setBlog: (state, action) => { state.activeBlog = action.payload; }
+            }
+        });
+
+        const store = configureStore({ reducer: { app: slice.reducer } });
+
+        // --- UI ACTIONS ---
+        window.app = {
+            setPage: (p) => store.dispatch(slice.actions.setPage(p)),
+            setCat: (c) => store.dispatch(slice.actions.setCat(c)),
+            handleSearch: (v) => store.dispatch(slice.actions.setSearch(v)),
+            openBlog: (id) => store.dispatch(slice.actions.setBlog(blogs.find(b => b.id === id))),
+            closeModal: () => store.dispatch(slice.actions.setBlog(null))
+        };
+
+        // --- RENDER ---
+        function render() {
+            const state = store.getState().app;
+            const { blogs, cat, search, page, activeBlog } = state;
+
+            // Page Switch
+            document.querySelectorAll('main').forEach(m => m.style.display = 'none');
+            document.getElementById(`view-${page}`).style.display = (page === 'home') ? 'block' : 'block'; // Block/Flex depending on design
+            if (page !== 'home') document.getElementById(`view-${page}`).style.display = 'block';
+
+            // Active Nav
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.id === `btn-${page}`);
+            });
+
+            if (page === 'home') {
+                // Categories
+                const cats = ['All', ...new Set(blogs.map(b => b.cat))];
+                document.getElementById('cat-bar').innerHTML = cats.map(c => `
+                    <button class="cat-btn ${cat === c ? 'active' : ''}" onclick="app.setCat('${c}')">${c}</button>
+                `).join('');
+
+                // Filtering
+                let filtered = blogs;
+                if (search) filtered = blogs.filter(b => b.title.toLowerCase().includes(search.toLowerCase()));
+                else if (cat !== 'All') filtered = blogs.filter(b => b.cat === cat);
+
+                // Hero
+                const heroSpot = document.getElementById('hero-spot');
+                if (filtered.length > 0 && !search) {
+                    const h = filtered[0];
+                    heroSpot.innerHTML = `
+                        <div class="hero-section">
+                            <div class="hero-card" onclick="app.openBlog(${h.id})">
+                                <img src="${h.img}" onerror="this.src='https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'">
+                                <div class="hero-overlay">
+                                    <span class="badge">${h.cat}</span>
+                                    <h1 class="hero-title">${h.title}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else heroSpot.innerHTML = '';
+
+                // Grid
+                const gridItems = (filtered.length > 0 && !search) ? filtered.slice(1) : filtered;
+                document.getElementById('news-grid').innerHTML = gridItems.map(b => `
+                    <div class="news-card" onclick="app.openBlog(${b.id})">
+                        <img src="${b.img}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'">
+                        <div class="card-body">
+                            <span class="card-cat">${b.cat}</span>
+                            <h3 class="card-title">${b.title}</h3>
+                            <p class="card-excerpt">${b.excerpt}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Modal
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            if (activeBlog) {
+                content.innerHTML = `
+                    <img src="${activeBlog.img}" class="modal-img" onerror="this.src='https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'">
+                    <div class="modal-body">
+                        <span class="badge">${activeBlog.cat}</span>
+                        <h1>${activeBlog.title}</h1>
+                        <p style="font-size: 1.2rem; color: #cbd5e1; line-height: 1.8;">${activeBlog.content}<br><br>${activeBlog.content.split('').reverse().join('')}</p>
+                    </div>
+                `;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        store.subscribe(render);
+        render();
+        console.log("Nexus Core Online - 20 Blogs Ready.");
+    </script>
+</body>
+</html>

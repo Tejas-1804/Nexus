@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | NEXUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+        <nav class="container">
+            <div class="logo-area" onclick="location.href='index.html'">
+                <span class="logo">NEXUS</span>
+                <span class="tagline">Insight Refined</span>
+            </div>
+            <div class="main-nav">
+                <a href="index.html" class="page-link">Home</a>
+                <a href="about.html" class="page-link active">About</a>
+                <a href="contact.html" class="page-link">Contact</a>
+            </div>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search news...">
+                </div>
+                <button class="cta-btn">Subscribe</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container page animate-fade-in">
+        <section class="about-hero">
+            <h1>Defining the Future of <span class="highlight">Journalism</span></h1>
+            <p class="subtitle">Nexus is a premium news network built for the curious. We provide deep, high-fidelity insights into the trends that shape our tomorrow.</p>
+        </section>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <i class="fa-solid fa-eye"></i>
+                <h3>Our Vision</h3>
+                <p>To create a digital sanctuary for deep thinking and factual reporting in an age of misinformation.</p>
+            </div>
+            <div class="about-card">
+                <i class="fa-solid fa-feather"></i>
+                <h3>Our Values</h3>
+                <p>Every story we publish is vetted for accuracy, integrity, and social impact. We value depth over speed.</p>
+            </div>
+            <div class="about-card">
+                <i class="fa-solid fa-users"></i>
+                <h3>Our Reach</h3>
+                <p>Join millions of monthly readers from 180+ countries who trust Nexus for their intelligence.</p>
+            </div>
+        </div>
+
+        <section style="padding: 5rem 0; text-align: center;">
+            <h2 style="font-size: 3rem; margin-bottom: 2rem;">Our Global <span class="highlight">Presence</span></h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 4rem;">With bureaus in New York, London, Tokyo, and Singapore, we are always at the heart of the story.</p>
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" alt="Nexus Office" style="width: 100%; border-radius: 40px; border: 1px solid var(--glass-border);">
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">NEXUS</div>
+                <p>Insight Refined. The world's leading premium news network.</p>
+            </div>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <a href="index.html?cat=Technology">Technology</a>
+                    <a href="index.html?cat=Science">Science</a>
+                    <a href="index.html?cat=Business">Business</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2024 Nexus News Portal. All rights reserved.</div>
+    </footer>
+
+    <script type="module">
+        document.getElementById('search-input').onkeypress = (e) => {
+            if (e.key === 'Enter') location.href = `index.html?search=${e.target.value}`;
+        };
+    </script>
+</body>
+</html>
