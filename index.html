@@ -54,6 +54,9 @@
         .main-nav { display: flex; gap: 2rem; }
         .nav-item { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 1rem; transition: var(--transition-smooth); }
         .nav-item:hover, .nav-item.active { color: var(--text-white); }
+        
+        .card-download-btn { background: rgba(99, 102, 241, 0.2); border: 1px solid var(--primary); color: var(--primary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: var(--transition-smooth); display: flex; align-items: center; gap: 0.4rem; width: fit-content; margin-top: 1rem; }
+        .card-download-btn:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px var(--primary-glow); }
 
         .search-bar { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); padding: 0.5rem 1.2rem; border-radius: 99px; display: flex; align-items: center; gap: 0.8rem; }
         .search-bar input { background: transparent; border: none; color: white; outline: none; font-size: 0.9rem; width: 180px; }
@@ -221,7 +224,36 @@
             setCat: (c) => store.dispatch(slice.actions.setCat(c)),
             handleSearch: (v) => store.dispatch(slice.actions.setSearch(v)),
             openBlog: (id) => store.dispatch(slice.actions.setBlog(blogs.find(b => b.id === id))),
-            closeModal: () => store.dispatch(slice.actions.setBlog(null))
+            closeModal: () => store.dispatch(slice.actions.setBlog(null)),
+            downloadBlog: function(blogId) {
+                const blog = blogs.find(b => b.id === blogId);
+                if (!blog) return;
+                
+                // Create formatted blog data
+                const blogData = {
+                    id: blog.id,
+                    title: blog.title,
+                    category: blog.cat,
+                    excerpt: blog.excerpt,
+                    content: blog.content,
+                    image: blog.img,
+                    downloadedAt: new Date().toISOString()
+                };
+                
+                // Create JSON string
+                const jsonString = JSON.stringify(blogData, null, 2);
+                
+                // Create blob and download
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
         };
 
         // --- RENDER ---
@@ -262,6 +294,9 @@
                                 <div class="hero-overlay">
                                     <span class="badge">${h.cat}</span>
                                     <h1 class="hero-title">${h.title}</h1>
+                                    <button class="card-download-btn" onclick="event.stopPropagation(); app.downloadBlog(${h.id})" title="Download this blog" style="margin-top: 1.5rem;">
+                                        <i class="fa-solid fa-download"></i> Download
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +312,9 @@
                             <span class="card-cat">${b.cat}</span>
                             <h3 class="card-title">${b.title}</h3>
                             <p class="card-excerpt">${b.excerpt}</p>
+                            <button class="card-download-btn" onclick="event.stopPropagation(); app.downloadBlog(${b.id})" title="Download this blog">
+                                <i class="fa-solid fa-download"></i> Download
+                            </button>
                         </div>
                     </div>
                 `).join('');
@@ -289,8 +327,15 @@
                 content.innerHTML = `
                     <img src="${activeBlog.img}" class="modal-img" onerror="this.src='https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'">
                     <div class="modal-body">
-                        <span class="badge">${activeBlog.cat}</span>
-                        <h1>${activeBlog.title}</h1>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                            <div>
+                                <span class="badge">${activeBlog.cat}</span>
+                                <h1>${activeBlog.title}</h1>
+                            </div>
+                            <button class="card-download-btn" onclick="app.downloadBlog(${activeBlog.id})" title="Download this blog">
+                                <i class="fa-solid fa-download"></i> Download
+                            </button>
+                        </div>
                         <p style="font-size: 1.2rem; color: #cbd5e1; line-height: 1.8;">${activeBlog.content}<br><br>${activeBlog.content.split('').reverse().join('')}</p>
                     </div>
                 `;
