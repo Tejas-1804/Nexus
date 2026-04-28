@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nexusportal.example.com/sitemap.xml
+Sitemap: https://news-portal-sand-five.vercel.app/sitemap.xml
